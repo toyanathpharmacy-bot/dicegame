@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jhanda Burja - Traditional Nepali Dice Game</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(-45deg, #ff416c, #ff4b2b, #4a569d, #1e3c72);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .container {
+      max-width: 900px;
+      width: 100%;
+      text-align: center;
+    }
+
+    header {
+      margin-bottom: 2rem;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 1.5rem;
+      border-radius: 20px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px);
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+      text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.6);
+      color: #FFD700;
+      animation: glow 2s infinite alternate;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 10px #FFD700; }
+      to { text-shadow: 0 0 25px #ffea00; }
+    }
+
+    .nepali-title {
+      font-size: 2.2rem;
+      color: #FFD700;
+      margin-bottom: 1rem;
+      font-weight: bold;
+    }
+
+    .game-area {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+      margin-bottom: 2rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+    }
+
+    .dice-container {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin: 2rem 0;
+      flex-wrap: wrap;
+    }
+
+    .dice {
+      width: 120px;
+      height: 120px;
+      background: radial-gradient(circle, #fff, #e0e0e0);
+      border-radius: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 4rem;
+      color: #333;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .dice:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px #FFD700;
+    }
+
+    .dice-symbol {
+      font-size: 4rem;
+    }
+
+    .roll-btn {
+      background: linear-gradient(135deg, #FFD700, #ff9f1c);
+      color: #8B0000;
+      border: none;
+      padding: 1rem 2.5rem;
+      font-size: 1.3rem;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    .roll-btn:hover {
+      background: linear-gradient(135deg, #ffec8b, #ffd700);
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+    }
+
+    .roll-btn:active {
+      transform: scale(0.95);
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      margin: 1.5rem 0;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 1rem;
+      border-radius: 15px;
+      flex-wrap: wrap;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .stat-value {
+      font-size: 2.2rem;
+      font-weight: bold;
+      color: #FFD700;
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+    }
+
+    .message {
+      font-size: 1.6rem;
+      margin: 1rem 0;
+      font-weight: bold;
+      color: #FFD700;
+      animation: pulse 2s infinite;
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    .symbols-guide {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin: 1.5rem 0;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 1.5rem;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+
+    .symbol-display {
+      width: 60px;
+      height: 60px;
+      background: white;
+      border-radius: 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s;
+    }
+
+    .symbol-display:hover {
+      transform: rotate(10deg) scale(1.1);
+    }
+
+    .winning-combinations {
+      background: rgba(255, 215, 0, 0.2);
+      border: 2px solid #FFD700;
+      border-radius: 15px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+
+    .winning-combinations h3 {
+      color: #FFD700;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 10px #FFD700;
+    }
+
+    .combination {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin: 0.5rem 0;
+      padding: 0.5rem;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+    }
+
+    .combination-symbols {
+      font-size: 1.8rem;
+      margin-right: 1rem;
+    }
+
+    .combination-desc {
+      font-size: 1rem;
+      color: #ffec8b;
+    }
+
+    .history {
+      margin-top: 2rem;
+      max-height: 220px;
+      overflow-y: auto;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 1rem;
+      border-radius: 15px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .history h3 {
+      margin-bottom: 1rem;
+      color: #FFD700;
+      text-shadow: 0 0 10px #FFD700;
+    }
+
+    .history-item {
+      padding: 0.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      animation: fadeIn 0.6s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .special {
+      color: #ffec8b;
+      font-weight: bold;
+      text-shadow: 0 0 15px #FFD700;
+    }
+
+    .winner {
+      color: #00ff00;
+      font-weight: bold;
+      text-shadow: 0 0 15px #00ff00;
+      animation: winnerGlow 1s infinite alternate;
+    }
+
+    @keyframes winnerGlow {
+      from { text-shadow: 0 0 10px #00ff00; }
+      to { text-shadow: 0 0 25px #00ff00, 0 0 35px #00ff00; }
+    }
+
+    @keyframes roll {
+      0% { transform: rotate(0deg) scale(1); }
+      25% { transform: rotate(90deg) scale(1.1); }
+      50% { transform: rotate(180deg) scale(1); }
+      75% { transform: rotate(270deg) scale(1.1); }
+      100% { transform: rotate(360deg) scale(1); }
+    }
+
+    .rolling {
+      animation: roll 0.5s ease-in-out;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Jhanda Burja</h1>
+      <div class="nepali-title">झण्डा बुर्जा</div>
+      <p class="subtitle">Traditional Nepali Dice Game with Symbol Dice</p>
+    </header>
+
+    <div class="game-area">
+      <div class="dice-container">
+        <div class="dice" id="dice1"><div class="dice-symbol">🎌</div></div>
+        <div class="dice" id="dice2"><div class="dice-symbol">👑</div></div>
+        <div class="dice" id="dice3"><div class="dice-symbol">♥️</div></div>
+      </div>
+
+      <div class="message" id="message">Press Roll to start the game!</div>
+
+      <div class="controls">
+        <button class="roll-btn" id="rollBtn">Roll Dice</button>
+      </div>
+
+      <div class="stats">
+        <div class="stat-box">
+          <div class="stat-value" id="currentRoll">-</div>
+          <div class="stat-label">Current Combination</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value" id="totalRolls">0</div>
+          <div class="stat-label">Total Rolls</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value" id="specialCount">0</div>
+          <div class="stat-label">Winning Rolls</div>
+        </div>
+      </div>
+
+      <div class="winning-combinations">
+        <h3>🎯 Winning Combinations 🎯</h3>
+        <div class="combination">
+          <div class="combination-symbols">🎌 👑 ♥️</div>
+          <div class="combination-desc">Royal Flush - Ultimate Win!</div>
+        </div>
+        <div class="combination">
+          <div class="combination-symbols">♠️ ♣️ ♦️</div>
+          <div class="combination-desc">Card Masters - Great Win!</div>
+        </div>
+        <div class="combination">
+          <div class="combination-symbols">🎌 🎌 🎌</div>
+          <div class="combination-desc">Triple Jhanda - Champion!</div>
+        </div>
+        <div class="combination">
+          <div class="combination-symbols">👑 👑 👑</div>
+          <div class="combination-desc">Triple Burja - Royal Victory!</div>
+        </div>
+        <div class="combination">
+          <div class="combination-symbols">♥️ ♥️ ♥️</div>
+          <div class="combination-desc">Triple Paan - Full of Love!</div>
+        </div>
+        <div class="combination">
+          <div class="combination-symbols">Any Three of a Kind</div>
+          <div class="combination-desc">All three dice same symbol - Win!</div>
+        </div>
+      </div>
+
+      <div class="symbols-guide">
+        <div class="symbol-item"><div class="symbol-display">🎌</div><div class="symbol-name">Jhanda (Flag)</div></div>
+        <div class="symbol-item"><div class="symbol-display">👑</div><div class="symbol-name">Burja (Crown)</div></div>
+        <div class="symbol-item"><div class="symbol-display">♥️</div><div class="symbol-name">Paan (Heart)</div></div>
+        <div class="symbol-item"><div class="symbol-display">♠️</div><div class="symbol-name">Surat (Spade)</div></div>
+        <div class="symbol-item"><div class="symbol-display">♣️</div><div class="symbol-name">Cheed (Club)</div></div>
+        <div class="symbol-item"><div class="symbol-display">♦️</div><div class="symbol-name">Itta (Diamond)</div></div>
+      </div>
+    </div>
+
+    <div class="history">
+      <h3>Roll History</h3>
+      <ul class="history-list" id="historyList"></ul>
+    </div>
+  </div>
+
+  <script>
+    let totalRolls = 0;
+    let specialCount = 0;
+    let isRolling = false;
+
+    const dice1 = document.getElementById('dice1');
+    const dice2 = document.getElementById('dice2');
+    const dice3 = document.getElementById('dice3');
+    const rollBtn = document.getElementById('rollBtn');
+    const messageEl = document.getElementById('message');
+    const currentRollEl = document.getElementById('currentRoll');
+    const totalRollsEl = document.getElementById('totalRolls');
+    const specialCountEl = document.getElementById('specialCount');
+    const historyList = document.getElementById('historyList');
+
+    const symbols = [
+      { emoji: "🎌", name: "Jhanda (Flag)" },
+      { emoji: "👑", name: "Burja (Crown)" },
+      { emoji: "♥️", name: "Paan (Heart)" },
+      { emoji: "♠️", name: "Surat (Spade)" },
+      { emoji: "♣️", name: "Cheed (Club)" },
+      { emoji: "♦️", name: "Itta (Diamond)" }
+    ];
+
+    const winningCombinations = [
+      { symbols: ["🎌", "👑", "♥️"], message: "🎉 ROYAL FLUSH! ULTIMATE WIN! 🎉", isWinner: true },
+      { symbols: ["♠️", "♣️", "♦️"], message: "🃏 CARD MASTERS! GREAT WIN! 🃏", isWinner: true },
+      { symbols: ["🎌", "🎌", "🎌"], message: "🚩 TRIPLE JHANDA! YOU'RE A CHAMPION! 🚩", isWinner: true },
+      { symbols: ["👑", "👑", "👑"], message: "👑 TRIPLE BURJA! ROYAL VICTORY! 👑", isWinner: true },
+      { symbols: ["♥️", "♥️", "♥️"], message: "💖 TRIPLE PAAN! FULL OF LOVE! 💖", isWinner: true }
+    ];
+
+    function initGame() {
+      updateStats();
+      rollBtn.addEventListener('click', rollDice);
+    }
+
+    function rollDice() {
+      if (isRolling) return;
+
+      isRolling = true;
+      rollBtn.disabled = true;
+      messageEl.textContent = 'Rolling...';
+      messageEl.className = 'message';
+
+      dice1.classList.add('rolling');
+      dice2.classList.add('rolling');
+      dice3.classList.add('rolling');
+
+      let rolls = 0;
+      const maxRolls = 10;
+      const rollInterval = setInterval(() => {
+        const symbol1 = symbols[Math.floor(Math.random() * symbols.length)];
+        const symbol2 = symbols[Math.floor(Math.random() * symbols.length)];
+        const symbol3 = symbols[Math.floor(Math.random() * symbols.length)];
+
+        dice1.querySelector('.dice-symbol').textContent = symbol1.emoji;
+        dice2.querySelector('.dice-symbol').textContent = symbol2.emoji;
+        dice3.querySelector('.dice-symbol').textContent = symbol3.emoji;
+
+        rolls++;
+        if (rolls >= maxRolls) {
+          clearInterval(rollInterval);
+
+          const finalSymbol1 = symbols[Math.floor(Math.random() * symbols.length)];
+          const finalSymbol2 = symbols[Math.floor(Math.random() * symbols.length)];
+          const finalSymbol3 = symbols[Math.floor(Math.random() * symbols.length)];
+
+          dice1.querySelector('.dice-symbol').textContent = finalSymbol1.emoji;
+          dice2.querySelector('.dice-symbol').textContent = finalSymbol2.emoji;
+          dice3.querySelector('.dice-symbol').textContent = finalSymbol3.emoji;
+
+          const result = checkWinningCombination(finalSymbol1, finalSymbol2, finalSymbol3);
+
+          totalRolls++;
+          if (result.isWinner) specialCount++;
+
+          dice1.classList.remove('rolling');
+          dice2.classList.remove('rolling');
+          dice3.classList.remove('rolling');
+
+          updateStats(finalSymbol1, finalSymbol2, finalSymbol3);
+          addToHistory(finalSymbol1, finalSymbol2, finalSymbol3, result);
+
+          isRolling = false;
+          rollBtn.disabled = false;
+        }
+      }, 100);
+    }
+
+    function checkWinningCombination(symbol1, symbol2, symbol3) {
+      const currentSymbols = [symbol1.emoji, symbol2.emoji, symbol3.emoji].sort();
+      
+      // Check predefined winning combinations
+      for (const combo of winningCombinations) {
+        const comboSymbols = [...combo.symbols].sort();
+        if (JSON.stringify(currentSymbols) === JSON.stringify(comboSymbols)) {
+          messageEl.innerHTML = `<span class="winner">${combo.message}</span>`;
+          return { isWinner: true, message: combo.message };
+        }
+      }
+      
+      // Check for any three-of-a-kind (all dice same)
+      if (symbol1.emoji === symbol2.emoji && symbol2.emoji === symbol3.emoji) {
+        const winMessage = `🎊 THREE ${symbol1.name.toUpperCase()}S! YOU WIN! 🎊`;
+        messageEl.innerHTML = `<span class="winner">${winMessage}</span>`;
+        return { isWinner: true, message: winMessage };
+      }
+      
+      // Regular roll (not a winner)
+      messageEl.textContent = `You rolled ${symbol1.name}, ${symbol2.name}, ${symbol3.name}`;
+      return { isWinner: false, message: `Rolled ${symbol1.name}, ${symbol2.name}, ${symbol3.name}` };
+    }
+
+    function updateStats(symbol1 = null, symbol2 = null, symbol3 = null) {
+      if (symbol1 && symbol2 && symbol3) {
+        currentRollEl.innerHTML = `${symbol1.emoji} ${symbol2.emoji} ${symbol3.emoji}`;
+      } else {
+        currentRollEl.textContent = "-";
+      }
+      totalRollsEl.textContent = totalRolls;
+      specialCountEl.textContent = specialCount;
+    }
+
+    function addToHistory(symbol1, symbol2, symbol3, result) {
+      const historyItem = document.createElement('li');
+      historyItem.className = 'history-item';
+      
+      if (result.isWinner) {
+        historyItem.innerHTML = `Roll #${totalRolls}: ${symbol1.emoji} ${symbol2.emoji} ${symbol3.emoji} <span class="winner">🏆 WINNER!</span>`;
+      } else {
+        historyItem.textContent = `Roll #${totalRolls}: ${symbol1.emoji} ${symbol2.emoji} ${symbol3.emoji}`;
+      }
+      
+      historyList.prepend(historyItem);
+      if (historyList.children.length > 10) {
+        historyList.removeChild(historyList.lastChild);
+      }
+    }
+
+    window.onload = initGame;
+  </script>
+</body>
+</html>
